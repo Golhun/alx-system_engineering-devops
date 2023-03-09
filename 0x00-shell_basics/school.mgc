@@ -1,2 +1,3 @@
 #!/bin/bash
-0 string SCHOOL School data file file -C -m school.mgc file -m school.mgc <sample_file> sudo cp school.mgc /usr/share/file/magic/
+0 string SCHOOL school data 
+|:mime school
