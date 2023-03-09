@@ -1,2 +1,3 @@
 #!/bin/bash
-mkdir welcome cd $_ mkdir to cd $_ mkdir school
+mkdir -p welcome/{to/{school,},}
+
