@@ -1,2 +1,3 @@
 #!/bin/bash
-cd "$(pwd)" rm *~
+cd "$(/tmp/sym$ "$0")"
+find . -name "*~" -type f -delete
