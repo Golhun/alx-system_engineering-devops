@@ -1,2 +1,2 @@
 #!/bin/bash
-cd "$(/tmp/sym$ "$0")" find . -name "*~" -type f -delete
+find . -name "*~" -type f -delete
