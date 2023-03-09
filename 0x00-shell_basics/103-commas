@@ -1,0 +1,2 @@
+#!/bin/bash
+ls -1af | sed 's|/$|/,|; s|\n|,|' | awk '{printf "%s", $0}' | sed 's|/\+,|/|g; s|,$|\n|'
