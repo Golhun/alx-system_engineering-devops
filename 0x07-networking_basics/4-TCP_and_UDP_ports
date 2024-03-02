@@ -1,3 +1,34 @@
-#!/bin/bash
-sudo netstat -tulnep | awk 'NR>2 {print $1, $4, $7}' | sed 's/://; s|/|\t|' | awk '{system("ps -p "$NF" -o comm= | sed 1d")}' | sed 's/$/\t/'; sudo netstat -ulnep | awk 'NR>2 {print $1, $4, $7}' | sed 's/://; s|/|\t|' | awk '{system("ps -p "$NF" -o comm= | sed 1d")}' | sed 's/$/\t/'
+#!/usr/bin/env bash
+# This script displays listening TCP and UDP ports along with the PID and name of the program to which each socket belongs
+
+# Check if script is run with sudo
+if [[ $(id -u) -ne 0 ]]; then
+    echo "Please run this script with sudo or as root"
+    exit 1
+fi
+
+# Get listening ports using netstat
+listening_ports=$(netstat -tuln)
+
+# Print header
+echo "Active Internet connections (only servers)"
+echo "Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name"
+
+# Print listening TCP ports with associated program information
+echo "$listening_ports" | awk '$1 ~ /^tcp/ && $NF !~ /127.0.0.1/ {print $0}' | while read -r line; do
+    proto=$(echo "$line" | awk '{print $1}')
+    local_address=$(echo "$line" | awk '{print $4}')
+    pid=$(echo "$line" | awk '{print $7}' | cut -d'/' -f1)
+    program=$(ps -p "$pid" -o comm=)
+    echo "$proto        $(echo "$line" | awk '{print $2, $3}')        $(echo "$line" | awk '{print $6}')        $pid/$program"
+done
+
+# Print listening UDP ports with associated program information
+echo "$listening_ports" | awk '$1 ~ /^udp/ && $NF !~ /127.0.0.1/ {print $0}' | while read -r line; do
+    proto=$(echo "$line" | awk '{print $1}')
+    local_address=$(echo "$line" | awk '{print $4}')
+    pid=$(echo "$line" | awk '{print $6}' | cut -d'/' -f1)
+    program=$(ps -p "$pid" -o comm=)
+    echo "$proto        $(echo "$line" | awk '{print $2, $3}')        $pid/$program"
+done
 
