@@ -19,7 +19,7 @@ echo "$listening_ports" | awk '$1 ~ /^tcp/ && $NF !~ /127.0.0.1/ {print $0}' | w
     proto=$(echo "$line" | awk '{print $1}')
     local_address=$(echo "$line" | awk '{print $4}')
     pid=$(echo "$line" | awk '{print $7}' | cut -d'/' -f1)
-    program=$(ps -p "$pid" -o comm=)
+    program=$(ps -p "$pid" -o comm= | tail -n 1)
     echo "$proto        $(echo "$line" | awk '{print $2, $3}')        $(echo "$line" | awk '{print $6}')        $pid/$program"
 done
 
@@ -28,7 +28,7 @@ echo "$listening_ports" | awk '$1 ~ /^udp/ && $NF !~ /127.0.0.1/ {print $0}' | w
     proto=$(echo "$line" | awk '{print $1}')
     local_address=$(echo "$line" | awk '{print $4}')
     pid=$(echo "$line" | awk '{print $6}' | cut -d'/' -f1)
-    program=$(ps -p "$pid" -o comm=)
+    program=$(ps -p "$pid" -o comm= | tail -n 1)
     echo "$proto        $(echo "$line" | awk '{print $2, $3}')        $pid/$program"
 done
 
