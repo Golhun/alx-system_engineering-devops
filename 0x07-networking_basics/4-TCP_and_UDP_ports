@@ -7,28 +7,18 @@ if [[ $(id -u) -ne 0 ]]; then
     exit 1
 fi
 
-# Get listening ports using netstat
-listening_ports=$(netstat -tuln)
-
 # Print header
 echo "Active Internet connections (only servers)"
 echo "Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name"
 
-# Print listening TCP ports with associated program information
-echo "$listening_ports" | awk '$1 ~ /^tcp/ && $NF !~ /127.0.0.1/ {print $0}' | while read -r line; do
-    proto=$(echo "$line" | awk '{print $1}')
-    local_address=$(echo "$line" | awk '{print $4}')
-    pid=$(echo "$line" | awk '{print $7}' | cut -d'/' -f1)
-    program=$(ps -p "$pid" -o comm= | tail -n 1)
-    echo "$proto        $(echo "$line" | awk '{print $2, $3}')        $(echo "$line" | awk '{print $6}')        $pid/$program"
-done
-
-# Print listening UDP ports with associated program information
-echo "$listening_ports" | awk '$1 ~ /^udp/ && $NF !~ /127.0.0.1/ {print $0}' | while read -r line; do
-    proto=$(echo "$line" | awk '{print $1}')
-    local_address=$(echo "$line" | awk '{print $4}')
-    pid=$(echo "$line" | awk '{print $6}' | cut -d'/' -f1)
-    program=$(ps -p "$pid" -o comm= | tail -n 1)
-    echo "$proto        $(echo "$line" | awk '{print $2, $3}')        $pid/$program"
-done
+# Get listening ports using netstat and format output
+netstat -tuln | awk 'NR > 2 && $NF ~ /^[0-9]/ {
+    proto=$1
+    local_address=$4
+    pid_command=$7
+    split(pid_command, pid_array, "/")
+    pid=pid_array[1]
+    program=$NF
+    printf "%-8s %-10s %-25s %-25s %-11s %-15s\n", proto, $2, local_address, $5, $6, pid"/"program
+}'
 
