@@ -1,3 +1,23 @@
-#!/bin/bash
-sudo netstat -tulnep | awk 'NR>2 {print $1, $4, $7}' | sed 's/://; s|/|\t|' | awk '{system("ps -p "$NF" -o comm= | sed 1d")}' | sed 's/$/\t/'; sudo netstat -ulnep | awk 'NR>2 {print $1, $4, $7}' | sed 's/://; s|/|\t|' | awk '{system("ps -p "$NF" -o comm= | sed 1d")}' | sed 's/$/\t/'
+#!/usr/bin/env bash
+# This script displays listening TCP and UDP ports along with the PID and name of the program to which each socket belongs
+
+# Check if script is run with sudo
+if [[ $(id -u) -ne 0 ]]; then
+    echo "Please run this script with sudo or as root"
+    exit 1
+fi
+
+# Print header
+printf "%-6s %-8s %-25s %-25s %-10s %-s\n" "Proto" "Recv-Q" "Local Address" "Foreign Address" "State" "PID/Program name"
+
+# Get listening ports using netstat and format output
+netstat -tuln | awk 'NR > 2 && $NF ~ /^[0-9]/ {
+    proto=$1
+    local_address=$4
+    pid_command=$7
+    split(pid_command, pid_array, "/")
+    pid=pid_array[1]
+    program=$NF
+    printf "%-6s %-8s %-25s %-25s %-10s %-s\n", proto, $2, local_address, $5, $6, pid"/"program
+}'
 
