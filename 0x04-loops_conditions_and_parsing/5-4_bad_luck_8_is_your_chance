@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Displays "Best School", "bad luck", or "good luck" based on the iteration number.
+# "bad luck" on the 4th iteration, "good luck" on the 8th, and "Best School" otherwise.
+
+count=0
+
+while [ $count -lt 10 ]
+do
+  if [ $count -eq 3 ]
+  then
+    echo "bad luck"
+  elif [ $count -eq 7 ]
+  then
+    echo "good luck"
+  else
+    echo "Best School"
+  fi
+  (( count++ ))
+done
