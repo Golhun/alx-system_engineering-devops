@@ -13,6 +13,9 @@ do
   do
     printf "%02d\n" "$minute"
     (( minute++ ))
+    if [ $hour -eq 12 ] && [ $minute -eq 59 ]; then
+      break 2
+    fi
   done
   (( hour++ ))
 done
