@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # Displays a list of currently running processes containing the 'bash' keyword.
-# - Uses 'pgrep' to filter processes based on the 'bash' keyword.
+# - Uses 'ps' and 'grep' to filter processes based on the keyword 'bash'.
 
-pgrep bash
+ps -aux | grep bash
