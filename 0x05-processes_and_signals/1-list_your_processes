@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Displays a list of currently running processes, including details for all users and processes without a TTY.
+
+ps -auxf
