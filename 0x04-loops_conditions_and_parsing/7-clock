@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Displays the time from 0:01 to 12:59 in one-minute increments.
-# - Displays hours from 0 to 12.
-# - Displays minutes from 1 to 59 for each hour.
+# Displays the time for 12 horus and 59 minutes.
+#   Displays hours from 0 to 12
+#   Displays minutes from 1 to 59
 
 hour=0
 
@@ -11,11 +11,8 @@ do
   minute=1
   while [ $minute -le 59 ]
   do
-    printf "%02d\n" "$minute"
+    echo "$minute"
     (( minute++ ))
-    if [ $hour -eq 12 ] && [ $minute -eq 59 ]; then
-      break 2
-    fi
   done
   (( hour++ ))
 done
