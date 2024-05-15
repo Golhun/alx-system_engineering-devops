@@ -1,0 +1,9 @@
+#!/bin/bash
+# Scrit that connects to server via ssh
+
+private_key="~/Documents/ALX_Server/id_rsa"
+username="ubuntu"
+server_ip="35.153.16.9"
+
+chmod 400 "$private_key"
+ssh -i "$private_key" "$username@$server_ip"
