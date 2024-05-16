@@ -1,9 +1,12 @@
-#!/bin/bash
-# Scrit that connects to server via ssh
+#!/usr/bin/env bash
+# Script: 0-use_a_private_key
+# Description: Script to SSH into a server using a private key
+# Author: [Your Name]
+# Date: [Date of Last Update]
 
-private_key="~/Documents/ALX_Server/id_rsa"
+private_key="/path/to/your/Private_key.txt"
 username="ubuntu"
 server_ip="35.153.16.9"
 
-chmod 400 "$private_key"
+chmod +x "$private_key"  # Ensure the private key file is executable
 ssh -i "$private_key" "$username@$server_ip"
