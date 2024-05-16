@@ -1,10 +1,4 @@
 #!/usr/bin/env bash
-# Script: 0-use_a_private_key
-# Description: Script to SSH into a server using a private key
+#A script that connects to serve through a private key
 
-private_key="~/Documents/ALX_Server/id_rsa""
-username="ubuntu"
-server_ip="35.153.16.9"
-
-chmod +x "$private_key"
-ssh -i "$private_key" "$username@$server_ip"
+ssh -i ~/.ssh/school ubuntu@<100.26.225.174
